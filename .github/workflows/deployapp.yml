@@ -41,7 +41,8 @@ jobs:
             --environment "$CONTAINERAPPS_ENVIRONMENT" \
             --image "${{ github.event.inputs.image_name }}" \
             --ingress external \
-            --target-port 5271
+            --target-port 5271 \
+            --env-vars ASPNETCORE_ENVIRONMENT=Development
           echo "Azure Container App created."
 
       - name: Update Azure Container App if exists
@@ -50,5 +51,6 @@ jobs:
           az containerapp update \
             --name "$CONTAINER_APP_NAME" \
             --resource-group "$RESOURCE_GROUP" \
-            --image "${{ github.event.inputs.image_name }}"
+            --image "${{ github.event.inputs.image_name }}" \
+            --env-vars ASPNETCORE_ENVIRONMENT=Development
           echo "Azure Container App updated."
