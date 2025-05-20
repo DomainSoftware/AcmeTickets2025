@@ -8,8 +8,8 @@ USER app
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG configuration=Release
 WORKDIR /src
-COPY ["Domains/EventManagement/Api/Api.csproj", "Domains/EventManagement/Api/"]
-RUN dotnet restore "Domains/EventManagement/Api/Api.csproj"
+COPY ["src/Domains/EventManagement/Api/Api.csproj", "src/Domains/EventManagement/Api/"]
+RUN dotnet restore "src/Domains/EventManagement/Api/Api.csproj"
 COPY . .
 WORKDIR "/src/Domains/EventManagement/Api"
 RUN dotnet build "Api.csproj" -c $configuration -o /app/build
