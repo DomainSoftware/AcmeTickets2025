@@ -43,7 +43,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t $IMAGE_NAME:${{ github.sha }} -f src/Domains/EventManagement/Api/Dockerfile src/Domains/EventManagement/Api/
+        run: docker build -t $IMAGE_NAME:${{ github.sha }} -f src/Domains/EventManagement/Api/Dockerfile .
 
       - name: Save Docker image to tar
         run: docker save $IMAGE_NAME:${{ github.sha }} -o image.tar
