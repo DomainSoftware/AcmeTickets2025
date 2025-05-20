@@ -2,13 +2,17 @@ name: Deploy App to Azure Container App
 
 on:
   workflow_dispatch:
+    inputs:
+      image_name:
+        description: 'Full image name (e.g. ghcr.io/org/repo:tag)'
+        required: true
+        type: string
 
 env:
   RESOURCE_GROUP: acmetickets_rg
   CONTAINER_APP_NAME: acmetickets2025-app
   CONTAINERAPPS_ENVIRONMENT: acmeticketsacadev
   AZURE_LOCATION: eastus
-  IMAGE_NAME: ghcr.io/<your-org-or-username>/<your-image>:<tag>
 
 jobs:
   deploy-app:
@@ -35,7 +39,7 @@ jobs:
             --name "$CONTAINER_APP_NAME" \
             --resource-group "$RESOURCE_GROUP" \
             --environment "$CONTAINERAPPS_ENVIRONMENT" \
-            --image "$IMAGE_NAME" \
+            --image "${{ github.event.inputs.image_name }}" \
             --ingress external \
             --target-port 5271
           echo "Azure Container App created."
@@ -46,5 +50,5 @@ jobs:
           az containerapp update \
             --name "$CONTAINER_APP_NAME" \
             --resource-group "$RESOURCE_GROUP" \
-            --image "$IMAGE_NAME"
+            --image "${{ github.event.inputs.image_name }}"
           echo "Azure Container App updated."
