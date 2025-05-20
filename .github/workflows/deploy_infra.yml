@@ -21,18 +21,6 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Check for Azure Container App
-        id: check_aca
-        run: |
-          result=$(az containerapp show --name "$CONTAINER_APP_NAME" --resource-group "$RESOURCE_GROUP" --query "name" --output tsv 2>/dev/null || echo "notfound")
-          echo "result=$result" >> $GITHUB_OUTPUT
-
-      - name: Fail if Container App does not exist
-        if: steps.check_aca.outputs.result == 'notfound'
-        run: |
-          echo "Azure Container App not found. Please provision it before deploying."
-          exit 1
-
       - name: Create Azure Container Apps Environment
         run: |
           az containerapp env create \
@@ -40,19 +28,3 @@ jobs:
             --resource-group "$RESOURCE_GROUP" \
             --location "$AZURE_LOCATION"
           echo "Azure Container Apps Environment provisioned."
-
-    #   - name: Provision Azure Container App
-    #     run: |
-    #       az containerapp create \
-    #         --name "$CONTAINER_APP_NAME" \
-    #         --resource-group "$RESOURCE_GROUP" \
-    #         --environment "$CONTAINERAPPS_ENVIRONMENT" \
-    #         --image <your-image-name>:<tag> \
-    #         --ingress external \
-    #         --target-port 5271
-    #       echo "Azure Container App provisioned."
-
-    #   - name: Deploy to Azure Container App
-    #     if: steps.check_aca.outputs.result != 'notfound'
-    #     run: |
-    #       echo "Deploying to Azure Container App..."
