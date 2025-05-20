@@ -3,7 +3,7 @@ name: Build and Publish Docker Image
 permissions:
   contents: read
   packages: write
-  
+
 on:
   push:
     branches: [ "master" ]
@@ -18,7 +18,7 @@ jobs:
           IMAGE_NAME: ${{ vars.IMAGE_NAME }}
         run: |
           if [ -z "$IMAGE_NAME" ]; then
-            IMAGE_NAME="acmetickets2025/app"
+            IMAGE_NAME="domainsoftware/eventmanagementapi"
           fi
           echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
 
@@ -45,6 +45,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check Docker login
+        run: docker info
 
       - name: Build Docker image
         run: docker build -t $IMAGE_NAME:${{ github.sha }} -f src/Domains/EventManagement/Api/Dockerfile .
