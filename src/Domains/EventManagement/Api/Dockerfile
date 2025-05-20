@@ -10,7 +10,7 @@ ARG configuration=Release
 WORKDIR /src
 COPY ["src/Domains/EventManagement/Api/Api.csproj", "src/Domains/EventManagement/Api/"]
 RUN dotnet restore "src/Domains/EventManagement/Api/Api.csproj"
-COPY . .
+COPY src/Domains/EventManagement/Api/. ./src/Domains/EventManagement/Api/
 WORKDIR "/src/Domains/EventManagement/Api"
 RUN dotnet build "Api.csproj" -c $configuration -o /app/build
 
