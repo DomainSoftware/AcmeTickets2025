@@ -65,7 +65,7 @@ jobs:
         id: push_image
         run: |
           docker push $IMAGE_NAME:${{ github.sha }}
-          echo "IMAGE_FULL_NAME=$IMAGE_NAME:${{ github.sha }}" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          echo "IMAGE_FULL_NAME=$IMAGE_NAME:${{ github.sha }}" >> $GITHUB_OUTPUT
           echo "Pushed image: $IMAGE_NAME:${{ github.sha }}"
 
       - name: Write image name to file
