@@ -18,7 +18,7 @@ jobs:
           IMAGE_NAME: ${{ vars.IMAGE_NAME }}
         run: |
           if [ -z "$IMAGE_NAME" ]; then
-            IMAGE_NAME="domainsoftware/eventmanagementapi"
+            IMAGE_NAME="domainsoftware/acmetickets2025"
           fi
           echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
 
