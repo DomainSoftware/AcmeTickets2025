@@ -8,6 +8,7 @@ env:
   CONTAINER_APP_NAME: acmetickets2025-app
   CONTAINERAPPS_ENVIRONMENT: acmeticketsacadev
   AZURE_LOCATION: eastus
+  SERVICEBUS_NAMESPACE: acmeticketsasb
 
 jobs:
   deploy-container-app:
@@ -28,3 +29,14 @@ jobs:
             --resource-group "$RESOURCE_GROUP" \
             --location "$AZURE_LOCATION"
           echo "Azure Container Apps Environment provisioned."
+
+      - name: Create Azure Service Bus Namespace
+        run: |
+          az servicebus namespace create \
+            --name "$SERVICEBUS_NAMESPACE" \
+            --resource-group "$RESOURCE_GROUP" \
+            --location "$AZURE_LOCATION" \
+            --sku Standard
+          echo "Azure Service Bus Namespace '$SERVICEBUS_NAMESPACE' provisioned."
+
+
