@@ -1,4 +1,4 @@
-name: Deploy Azure Container App
+name: Deploy Azure Infrastructure
 
 on:
   workflow_dispatch:
@@ -38,5 +38,13 @@ jobs:
             --location "$AZURE_LOCATION" \
             --sku Standard
           echo "Azure Service Bus Namespace '$SERVICEBUS_NAMESPACE' provisioned."
+
+      - name: Create Azure Service Bus Queue for NServiceBus Endpoint
+        run: |
+          az servicebus queue create \
+            --resource-group "$RESOURCE_GROUP" \
+            --namespace-name "$SERVICEBUS_NAMESPACE" \
+            --name EventManagement.Api
+          echo "Azure Service Bus Queue 'EventManagement.Api' provisioned."
 
 

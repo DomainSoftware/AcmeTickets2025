@@ -1,5 +1,18 @@
+using NServiceBus;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
+builder.Logging.AddConsole();
+
+var endpointConfiguration = new EndpointConfiguration("EventManagement.Api");
+endpointConfiguration.UseSerialization<SystemJsonSerializer>();
+
+var connectionString = builder.Configuration.GetConnectionString("AzureServiceBus");
+var routing = endpointConfiguration.UseTransport(new AzureServiceBusTransport(connectionString, TopicTopology.Default));
+
+
+builder.UseNServiceBus(endpointConfiguration);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddControllers(); // Add support for controllers
