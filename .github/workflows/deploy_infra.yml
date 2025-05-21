@@ -39,7 +39,7 @@ jobs:
             --sku Standard
           echo "Azure Service Bus Namespace '$SERVICEBUS_NAMESPACE' provisioned."
 
-      - name: Create Azure Service Bus Queue for NServiceBus Endpoint
+      - name: Create Azure Service Bus Queue for NServiceBus Endpoint EventManagement.Api
         run: |
           az servicebus queue create \
             --resource-group "$RESOURCE_GROUP" \
@@ -47,4 +47,10 @@ jobs:
             --name EventManagement.Api
           echo "Azure Service Bus Queue 'EventManagement.Api' provisioned."
 
-
+      - name: Create Azure Service Bus Queue for NServiceBus Endpoint EventManagement.Message
+        run: |
+          az servicebus queue create \
+            --resource-group "$RESOURCE_GROUP" \
+            --namespace-name "$SERVICEBUS_NAMESPACE" \
+            --name EventManagement.Message
+          echo "Azure Service Bus Queue 'EventManagement.Message' provisioned."

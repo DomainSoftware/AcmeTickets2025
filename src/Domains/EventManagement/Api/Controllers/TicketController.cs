@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using AcmeTickets2025.Domains.EventManagement.Shared.Events;
 
 namespace AcmeTickets2025.Domains.EventManagement.Api.Controllers
 {
@@ -35,13 +35,5 @@ namespace AcmeTickets2025.Domains.EventManagement.Api.Controllers
         public int Quantity { get; set; }
         public string? EventId { get; set; }
         public string? CustomerId { get; set; }
-    }
-
-    public class TicketRequestedEvent : NServiceBus.IEvent
-    {
-        public int Quantity { get; set; }
-        public string? EventId { get; set; }
-        public string? CustomerId { get; set; }
-        public DateTime RequestedAt { get; set; }
     }
 }
