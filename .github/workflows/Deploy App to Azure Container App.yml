@@ -49,7 +49,6 @@ jobs:
               --ingress external \
               --target-port 5271 \
               --env-vars ASPNETCORE_ENVIRONMENT=Development,ConnectionStrings__AzureServiceBus=${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }}
-          fi
 
       - name: Update Azure Container App if exists
         if: steps.check_aca.outputs.result != 'notfound'
@@ -68,4 +67,3 @@ jobs:
               --set-env-vars ASPNETCORE_ENVIRONMENT=Development,ConnectionStrings__AzureServiceBus=${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }} \
               --ingress external \
               --target-port 5271
-          fi
