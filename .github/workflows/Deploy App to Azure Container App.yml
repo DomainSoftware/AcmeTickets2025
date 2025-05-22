@@ -69,7 +69,5 @@ jobs:
               --resource-group "$RESOURCE_GROUP" \
               --image "${{ inputs.image_tag }}" \
               --set-env-vars ASPNETCORE_ENVIRONMENT=Development \
-              --set-env-vars ConnectionStrings__AzureServiceBus=${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }} \
-              --ingress external \
-              --target-port 5271
+              --set-env-vars ConnectionStrings__AzureServiceBus=${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }} 
           fi
