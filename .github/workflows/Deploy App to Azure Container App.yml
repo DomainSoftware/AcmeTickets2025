@@ -6,10 +6,12 @@ on:
       image_tag:
         required: true
         type: string
+      container_app_name:
+        required: true
+        type: string
 
 env:
   RESOURCE_GROUP: acmetickets_rg
-  CONTAINER_APP_NAME: acmetickets2025-app
   CONTAINERAPPS_ENVIRONMENT: acmeticketsacadev
   AZURE_LOCATION: eastus
 
@@ -17,12 +19,6 @@ jobs:
   deploy-app:
     runs-on: ubuntu-latest
     steps:
-      - name: Use image tag
-        run: echo "Deploying image ${{ inputs.image_tag }}"
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -31,28 +27,26 @@ jobs:
       - name: Check if Azure Container App exists
         id: check_aca
         run: |
-          result=$(az containerapp show --name "$CONTAINER_APP_NAME" --resource-group "$RESOURCE_GROUP" --query "name" --output tsv 2>/dev/null || echo "notfound")
+          result=$(az containerapp show --name "${{ inputs.container_app_name }}" --resource-group "$RESOURCE_GROUP" --query "name" --output tsv 2>/dev/null || echo "notfound")
           echo "result=$result" >> $GITHUB_OUTPUT
 
       - name: Create Azure Container App if not exists
         if: steps.check_aca.outputs.result == 'notfound'
         run: |
           az containerapp create \
-            --name "$CONTAINER_APP_NAME" \
+            --name "${{ inputs.container_app_name }}" \
             --resource-group "$RESOURCE_GROUP" \
             --environment "$CONTAINERAPPS_ENVIRONMENT" \
             --image "${{ inputs.image_tag }}" \
             --ingress external \
             --target-port 5271 \
             --env-vars ASPNETCORE_ENVIRONMENT=Development
-          echo "Azure Container App created."
 
       - name: Update Azure Container App if exists
         if: steps.check_aca.outputs.result != 'notfound'
         run: |
           az containerapp update \
-            --name "$CONTAINER_APP_NAME" \
+            --name "${{ inputs.container_app_name }}" \
             --resource-group "$RESOURCE_GROUP" \
             --image "${{ inputs.image_tag }}" \
             --set-env-vars ASPNETCORE_ENVIRONMENT=Development
-          echo "Azure Container App updated."
