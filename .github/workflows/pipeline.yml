@@ -7,12 +7,12 @@ on:
 
 jobs:
   build-and-publish:
-    uses: ./.github/workflows/docker-image.yml@master
+    uses: DomainSoftware/AcmeTickets2025/.github/workflows/docker-image.yml
     secrets: inherit
 
   deploy-app:
     needs: build-and-publish
-    uses: ./.github/workflows/deployapp.yml@master
+    uses: DomainSoftware/AcmeTickets2025/.github/workflows/deployapp.yml
     secrets: inherit
     with:
       image_tag: ${{ needs.build-and-publish.outputs.image_tag }}
