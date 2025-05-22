@@ -5,17 +5,14 @@ on:
     branches: [ "master" ]
   workflow_dispatch:
 
-env:
-  REPO: DomainSoftware/AcmeTickets2025
-
 jobs:
   build-and-publish:
-    uses: ${{ env.REPO }}/.github/workflows/docker-image.yml@master
+    uses: ./.github/workflows/docker-image.yml@master
     secrets: inherit
 
   deploy-app:
     needs: build-and-publish
-    uses: ${{ env.REPO }}/.github/workflows/deployapp.yml@master
+    uses: ./.github/workflows/deployapp.yml@master
     secrets: inherit
     with:
       image_tag: ${{ needs.build-and-publish.outputs.image_tag }}
