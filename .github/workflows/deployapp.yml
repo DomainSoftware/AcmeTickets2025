@@ -41,7 +41,7 @@ jobs:
             --name "$CONTAINER_APP_NAME" \
             --resource-group "$RESOURCE_GROUP" \
             --environment "$CONTAINERAPPS_ENVIRONMENT" \
-            --image "$IMAGE_TAG" \
+            --image "${{ inputs.image_tag }}" \
             --ingress external \
             --target-port 5271 \
             --env-vars ASPNETCORE_ENVIRONMENT=Development
@@ -53,6 +53,6 @@ jobs:
           az containerapp update \
             --name "$CONTAINER_APP_NAME" \
             --resource-group "$RESOURCE_GROUP" \
-            --image "$IMAGE_TAG" \
+            --image "${{ inputs.image_tag }}" \
             --set-env-vars ASPNETCORE_ENVIRONMENT=Development
           echo "Azure Container App updated."
