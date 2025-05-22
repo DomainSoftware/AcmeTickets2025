@@ -67,5 +67,5 @@ jobs:
               --image "${{ inputs.image_tag }}" \
               --ingress external \
               --target-port 5271 \
-              --env-vars ASPNETCORE_ENVIRONMENT=Development,ConnectionStrings__AzureServiceBus=${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }}
+              --set-env-vars ASPNETCORE_ENVIRONMENT=Development,ConnectionStrings__AzureServiceBus=${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }}
           fi
