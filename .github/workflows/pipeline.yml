@@ -5,18 +5,15 @@ on:
     branches: [ "master" ]
   workflow_dispatch:
 
-env:
-  REPO: DomainSoftware/AcmeTickets2025
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Build and Publish Docker Image
-        uses: ${{ env.REPO }}/.github/workflows/docker-image.yml@master
+        uses: DomainSoftware/AcmeTickets2025/.github/workflows/docker-image.yml@master
         id: build
 
       - name: Deploy App to Azure Container App
-        uses: ${{ env.REPO }}/.github/workflows/deployapp.yml@master
+        uses: DomainSoftware/AcmeTickets2025/.github/workflows/deployapp.yml@master
         with:
           image_tag: ${{ steps.build.outputs.image_tag }}
