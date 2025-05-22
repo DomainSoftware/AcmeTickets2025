@@ -67,9 +67,3 @@ jobs:
           echo "image_tag=${{ inputs.image_name }}:${{ github.sha }}" >> $GITHUB_OUTPUT
           echo "${{ inputs.image_name }}:${{ github.sha }}" > image_full_name.txt
           echo "Image name written to image_full_name.txt"
-
-      - name: Upload image tag artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: image-tag
-          path: image_full_name.txt
