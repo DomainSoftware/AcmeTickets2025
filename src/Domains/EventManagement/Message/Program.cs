@@ -9,6 +9,9 @@ builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 builder.Logging.AddConsole();
 
 var endpointConfiguration = new EndpointConfiguration("EventManagement.Message");
+endpointConfiguration.Conventions()
+    .DefiningEventsAs(type => type.Namespace != null && type.Namespace.EndsWith("Events"))
+    .DefiningCommandsAs(type => type.Namespace != null && type.Namespace.EndsWith("Commands"));
 
 var connectionString = builder.Configuration.GetConnectionString("AzureServiceBus");
 var transport = endpointConfiguration.UseTransport(new AzureServiceBusTransport(connectionString, TopicTopology.Default));

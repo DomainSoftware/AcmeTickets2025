@@ -1,10 +1,9 @@
 name: Deploy App to Azure Container App
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      image_name:
-        description: 'Full image name (e.g. ghcr.io/org/repo:tag)'
+      image_tag:
         required: true
         type: string
 
@@ -18,6 +17,9 @@ jobs:
   deploy-app:
     runs-on: ubuntu-latest
     steps:
+      - name: Use image tag
+        run: echo "Deploying image ${{ inputs.image_tag }}"
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -39,7 +41,7 @@ jobs:
             --name "$CONTAINER_APP_NAME" \
             --resource-group "$RESOURCE_GROUP" \
             --environment "$CONTAINERAPPS_ENVIRONMENT" \
-            --image "${{ github.event.inputs.image_name }}" \
+            --image "$IMAGE_TAG" \
             --ingress external \
             --target-port 5271 \
             --env-vars ASPNETCORE_ENVIRONMENT=Development
@@ -51,6 +53,6 @@ jobs:
           az containerapp update \
             --name "$CONTAINER_APP_NAME" \
             --resource-group "$RESOURCE_GROUP" \
-            --image "${{ github.event.inputs.image_name }}" \
+            --image "$IMAGE_TAG" \
             --set-env-vars ASPNETCORE_ENVIRONMENT=Development
           echo "Azure Container App updated."

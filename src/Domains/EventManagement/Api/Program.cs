@@ -7,7 +7,10 @@ builder.Logging.AddConsole();
 
 var endpointConfiguration = new EndpointConfiguration("EventManagement.Api");
 endpointConfiguration.UseSerialization<SystemJsonSerializer>();
-
+endpointConfiguration.Conventions()
+    .DefiningEventsAs(type => type.Namespace != null && type.Namespace.EndsWith("Events"))
+    .DefiningCommandsAs(type => type.Namespace != null && type.Namespace.EndsWith("Commands"));
+    
 var connectionString = builder.Configuration.GetConnectionString("AzureServiceBus");
 var routing = endpointConfiguration.UseTransport(new AzureServiceBusTransport(connectionString, TopicTopology.Default));
 

@@ -54,3 +54,13 @@ jobs:
             --namespace-name "$SERVICEBUS_NAMESPACE" \
             --name EventManagement.Message
           echo "Azure Service Bus Queue 'EventManagement.Message' provisioned."
+
+      - name: Create Azure Service Bus Topic for TicketRequestedEvent
+        run: |
+          az servicebus topic create \
+            --resource-group "$RESOURCE_GROUP" \
+            --namespace-name "$SERVICEBUS_NAMESPACE" \
+            --name AcmeTickets2025.Domains.EventManagement.Shared.Events.TicketRequestedEvent
+          echo "Azure Service Bus Topic 'AcmeTickets2025.Domains.EventManagement.Shared.Events.TicketRequestedEvent' provisioned."
+
+

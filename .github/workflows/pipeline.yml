@@ -1,0 +1,19 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Build and Publish Docker Image
+        id: build
+        uses: ./.github/workflows/docker-image.yml
+
+      - name: Deploy App to Azure Container App
+        uses: ./.github/workflows/deployapp.yml
+        with:
+          image_tag: ${{ steps.build.outputs.image_tag }}
