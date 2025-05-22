@@ -5,15 +5,17 @@ on:
     branches: [ "master" ]
   workflow_dispatch:
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build and Publish Docker Image
-        uses: DomainSoftware/AcmeTickets2025/.github/workflows/docker-image.yml@master
-        id: build
+env:
+  REPO: DomainSoftware/AcmeTickets2025
 
-      - name: Deploy App to Azure Container App
-        uses: DomainSoftware/AcmeTickets2025/.github/workflows/deployapp.yml@master
-        with:
-          image_tag: ${{ steps.build.outputs.image_tag }}
+jobs:
+  build-and-publish:
+    uses: ${{ env.REPO }}/.github/workflows/docker-image.yml@master
+    secrets: inherit
+
+  deploy-app:
+    needs: build-and-publish
+    uses: ${{ env.REPO }}/.github/workflows/deployapp.yml@master
+    secrets: inherit
+    with:
+      image_tag: ${{ needs.build-and-publish.outputs.image_tag }}

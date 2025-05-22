@@ -6,11 +6,17 @@ permissions:
 
 on:
   workflow_call:
+    outputs:
+      image_tag:
+        description: 'The built image tag'
+        value: ${{ jobs.build-and-publish.outputs.image_tag }}
   workflow_dispatch:
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.write_image_tag.outputs.image_tag }}
     steps:
       - name: Set IMAGE_NAME variable
         env:
