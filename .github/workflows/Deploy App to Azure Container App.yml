@@ -39,7 +39,7 @@ jobs:
               --resource-group "$RESOURCE_GROUP" \
               --environment "$CONTAINERAPPS_ENVIRONMENT" \
               --image "${{ inputs.image_tag }}" \
-              --env-vars "ASPNETCORE_ENVIRONMENT=Development,ConnectionStrings__AzureServiceBus=${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }}"
+              --env-vars "ASPNETCORE_ENVIRONMENT=Development ConnectionStrings__AzureServiceBus='${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }}'"
           else
             az containerapp create \
               --name "${{ inputs.container_app_name }}" \
@@ -48,7 +48,7 @@ jobs:
               --image "${{ inputs.image_tag }}" \
               --ingress external \
               --target-port 5271 \
-              --env-vars "ASPNETCORE_ENVIRONMENT=Development,ConnectionStrings__AzureServiceBus=${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }}"
+              --env-vars "ASPNETCORE_ENVIRONMENT=Development ConnectionStrings__AzureServiceBus='${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }}'"
           fi
 
       - name: Update Azure Container App if exists
@@ -59,11 +59,11 @@ jobs:
               --name "${{ inputs.container_app_name }}" \
               --resource-group "$RESOURCE_GROUP" \
               --image "${{ inputs.image_tag }}" \
-              --set-env-vars "ASPNETCORE_ENVIRONMENT=Development,ConnectionStrings__AzureServiceBus=${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }}"
+              --set-env-vars "ASPNETCORE_ENVIRONMENT=Development ConnectionStrings__AzureServiceBus='${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }}'"
           else
             az containerapp update \
               --name "${{ inputs.container_app_name }}" \
               --resource-group "$RESOURCE_GROUP" \
               --image "${{ inputs.image_tag }}" \
-              --set-env-vars "ASPNETCORE_ENVIRONMENT=Development,ConnectionStrings__AzureServiceBus=${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }}" 
+              --set-env-vars "ASPNETCORE_ENVIRONMENT=Development ConnectionStrings__AzureServiceBus='${{ secrets.AZURE_SERVICEBUS_CONNECTION_STRING }}'" 
           fi
